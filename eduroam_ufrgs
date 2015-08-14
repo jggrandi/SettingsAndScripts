@@ -1,0 +1,15 @@
+Description='Eduroam UFRGS'
+Interface=<WIRELESS_INTERFACE>
+Connection=wireless
+Security=wpa-configsection
+ESSID=eduroam
+IP=dhcp
+WPAConfigSection=(
+    'ssid="eduroam"'
+    'key_mgmt=WPA-EAP'
+    'eap=PEAP'
+    'proto=WPA2'
+    'phase2="auth=MSCHAPV2"'
+    'identity="<ID>@ufrgs.br"'
+    'password="<PASSWORD>"'
+)
