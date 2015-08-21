@@ -1,0 +1,62 @@
+out_to_x no
+own_window no
+out_to_console yes
+background no
+max_text_width 0
+
+# Update interval in seconds
+update_interval 2.0
+
+# This is the number of times Conky will update before quitting.
+# Set to zero to run forever.
+total_run_times 0
+
+# Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
+short_units yes
+
+# How strict should if_up be when testing an interface for being up?
+# The value is one of up, link or address, to check for the interface
+# being solely up, being up and having link or being up, having link
+# and an assigned IP address. 
+if_up_strictness address
+
+# Add spaces to keep things from moving about?  This only affects certain objects.
+# use_spacer should have an argument of left, right, or none
+use_spacer left
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale no
+console_graph_ticks _,_,▁,▂,▃,▄,▅,▆,▇,█
+# number of cpu samples to average
+# set to 1 to disable averaging
+cpu_avg_samples 2
+
+# Stuff after 'TEXT' will be formatted on screen
+TEXT
+
+# JSON for i3bar
+
+[
+{ "full_text" : "","color":"\#AEB404","separator":false,"separator_block_width":6}, 
+{ "full_text" : "${cpugraph cpu0 10,1}" , "separator":false, "separator_block_width":3 , "color" : ${if_match ${cpu cpu0}<90}"\#aea79f"${else}"\#FF3333"${endif}},
+{ "full_text" : "${cpugraph cpu1 10,1}" , "color" : ${if_match ${cpu cpu1}<90}"\#aea79f"${else}"\#FF3333"${endif}},
+{ "full_text" : "","color":"\#AEB404","separator":false,"separator_block_width":6},
+{ "full_text" : "${memgraph 0,5}" , "color" :${if_match ${meimperc}<90}"\#aea79f"${else}"\#FF3333"${endif} },
+{ "full_text" : " ${if_up wlp3s0} ${wireless_essid}:${wireless_link_qual_perc wlp3s0}% [${addr wlp3s0}] ${else} off ${endif}","color": ${if_up wlp3s0} "\#00FF00" ${else} "\#FF3333" ${endif} ,"separator":false,"separator_block_width":6},
+{ "full_text" : " ${if_up enp4s0} [${addr enp4s0}] ${else} off ${endif}","color": ${if_up enp4s0} "\#00FF00" ${else} "\#FF3333" ${endif}},
+#{ "full_text" : "${upspeed wlp3s0}","color":"\#808080","separator":false,"separator_block_width":6},
+#{"full_text": ": [${upspeed wlp3s0}] ", "color":"\#00FF00", "separator": false, "separator_block_width":6}
+{ "full_text" : " sys ${fs_used /} [${fs_used_perc /}%]","color":"\#aea79f","separator":false,"separator_block_width":6},
+{ "full_text" : " home ${fs_used /home} [${fs_used_perc /home}%]","color":"\#aea79f"},
+{ "full_text" : " ${battery_percent BAT0}% ${battery_time BAT0} [${exec cat /sys/class/power_supply/BAT0/power_now | awk '{printf("%.2f\n",$1/1000000)}'}W]","color":"\#aea79f"},
+{ "full_text" : "","color":"\#F7FE2E","separator":false,"separator_block_width":6},
+{ "full_text" : "[${exec xbacklight | awk '{printf("%d\n",$1 + 0.5)}'}%] ","color":"\#808080","separator":false,"separator_block_width":6},
+{ "full_text" : "","color":"\#268BD2","separator":false,"separator_block_width":6},
+{ "full_text" : "${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f6} ","color":"\#808080"},
+{ "full_text" : "","color":"\#2E9AFE","separator":false,"separator_block_width":6},
+{ "full_text" : "${time %a %b %d}","color":"\#aea79f","separator":false},
+#{ "full_text" : "","color":"\#0404B4","separator":false,"separator_block_width":6},
+{ "full_text" : "${time %H:%M:%S} ","color":"\#aea79f","separator":false}
+
+],
+
