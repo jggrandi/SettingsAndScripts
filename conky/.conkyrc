@@ -37,23 +37,87 @@ TEXT
 # JSON for i3bar
 
 [
+
+# CPU status
 { "full_text" : "","color":"\#AEB404","separator":false,"separator_block_width":6}, 
-{ "full_text" : "${cpugraph cpu0 10,5}" , "separator":false, "separator_block_width":3 , "color" : ${if_match ${cpu cpu0}<90}"\#aea79f"${else}"\#FF3333"${endif}},
-{ "full_text" : "${cpugraph cpu1 10,5}" , "color" : ${if_match ${cpu cpu1}<90}"\#aea79f"${else}"\#FF3333"${endif}},
+{ "full_text" : "${cpugraph cpu0 10,5}" , "separator":false, "separator_block_width":3 , "color" : 
+		${if_match ${cpu cpu0}<90}
+			"\#aea79f"
+		${else}
+			"\#FF3333"
+		${endif}},
+
+{ "full_text" : "${cpugraph cpu1 10,5}" , "color" : 
+		${if_match ${cpu cpu1}<90}
+			"\#aea79f"
+		${else}
+			"\#FF3333"
+		${endif}},
+
+# Memory status
 { "full_text" : "","color":"\#AEB404","separator":false,"separator_block_width":6},
-{ "full_text" : "${memgraph 0,5}" , "color" :${if_match ${meimperc}<90}"\#aea79f"${else}"\#FF3333"${endif} },
-{ "full_text" : " ${if_up wlp3s0} ${wireless_essid}:${wireless_link_qual_perc wlp3s0}% [${addr wlp3s0}] ${endif}","color": ${if_up wlp3s0} "\#00FF00" ${else} "\#FF3333" ${endif} ,"separator":false,"separator_block_width":6},
-{ "full_text" : " ${if_up enp4s0} [${addr enp4s0}] ${endif}","color": ${if_up enp4s0} "\#00FF00" ${else} "\#FF3333" ${endif}},
+{ "full_text" : "${memgraph 0,5}" , "color" :
+		${if_match ${meimperc}<90}
+			"\#aea79f"
+		${else}
+			"\#FF3333"
+		${endif} },
+
+# WIFI status 
+{ "full_text" : " ${if_up wlp3s0} ${wireless_essid}:${wireless_link_qual_perc wlp3s0}% [${addr wlp3s0}] ${endif}","color": 
+		${if_up wlp3s0} 
+			"\#00FF00" 
+		${else} 
+			"\#FF3333" 
+		${endif} 
+		,"separator":false,"separator_block_width":6},
+
+# Ethernet status
+{ "full_text" : " ${if_up enp4s0} [${addr enp4s0}] ${endif}","color": 
+		${if_up enp4s0} 
+			"\#00FF00" 
+		${else} 
+			"\#FF3333" 
+		${endif}},
+
 #{ "full_text" : "${upspeed wlp3s0}","color":"\#808080","separator":false,"separator_block_width":6},
 #{"full_text": ": [${upspeed wlp3s0}] ", "color":"\#00FF00", "separator": false, "separator_block_width":6}
+
+# HDD status
 { "full_text" : " sys ${fs_used /} [${fs_used_perc /}%]","color":"\#aea79f","separator":false,"separator_block_width":6},
 { "full_text" : " home ${fs_used /home} [${fs_used_perc /home}%]","color":"\#aea79f"},
-{ "full_text" : "","color": ${if_match "${battery_short BAT0}" == "F"} "\#268BD2"${endif} ${if_match "${battery_short BAT0}" == "C"} "\#00FF00"${endif} ${if_match "${battery_short BAT0}" == "D"} "\#F7FE2E" ${else} "\#FF3333" ${endif},"separator":false,"separator_block_width":6},
+
+
+#Battery status
+{ "full_text" : "","color": 
+		${if_match "${execi 5 cat /sys/class/power_supply/BAT0/status}" == "Discharging"} 
+			"\#AEB404" 
+	    ${else} 
+	    ${if_match "${execi 5 cat /sys/class/power_supply/BAT0/status}" == "Charging"}
+	    	"\#00FF00"
+	    ${else}
+	    	"\#268BD2"
+	    ${endif}
+	    ${endif} 
+	    ,"separator":false,"separator_block_width":6},
+
 { "full_text" : "${battery_percent BAT0}% ${battery_time BAT0} [${execi 5 cat /sys/class/power_supply/BAT0/power_now | awk '{printf("%.2f\n",$1/1000000)}'}W]","color":"\#aea79f"},
+
+# Brightness status
 { "full_text" : "","color":"\#F7FE2E","separator":false,"separator_block_width":6},
 { "full_text" : "[${exec xbacklight | awk '{printf("%d\n",$1 + 0.5)}'}%] ","color":"\#808080","separator":false,"separator_block_width":6},
-{ "full_text" : "","color" : ${if_match "${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f8}" == "[on]"} "\#268BD2" ${else} "\#FF3333" ${endif} ,"separator":false,"separator_block_width":6},
+
+# Audio status
+{ "full_text" : "","color" : 
+		${if_match "${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f8}" == "[on]"} 
+			"\#268BD2" 
+		${else} 
+			"\#FF3333" 
+		${endif}
+		,"separator":false,"separator_block_width":6},
 { "full_text" : "${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f6} ","color":"\#808080"},
+
+# Date and time status
 { "full_text" : "","color":"\#2E9AFE","separator":false,"separator_block_width":6},
 { "full_text" : "${time %a %b %d}","color":"\#aea79f","separator":false},
 { "full_text" : "${time %H:%M:%S}","color":"\#aea79f","separator":false}
