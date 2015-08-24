@@ -1,0 +1,121 @@
+# [NEW]
+
+lscpi command to see if the NVidia card module is loaded
+$ lspci 
+list all pci devices. (optional: lspci | grep nvidia)
+
+powerstat to see the laptop power`s comsumption
+$ yaourt -S powerstat-git
+$ powerstat -d 0
+
+$ vim /etc/modprobe.d/blacklist-nouveau.conf
+blacklist nouveau
+blacklist nvidia
+
+$ sudo pacman -S acpi_call
+$ sudo depmod -a
+$ sudo modprobe acpi_call
+
+Create a file in /etc/systemd/system/disable_nvidia@.service
+
+[Unit]
+Description=Disable NVIDIA card
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo '\_SB.PCI0.P0P1.VGA._OFF' > /proc/acpi/call"
+
+[Install]
+WantedBy=multi-user.target
+
+$ sudo systemctl enable disable_nvidia@user
+
+Create a file in /etc/systemd/system/root-resume@.service
+
+[Unit]
+Description=Disable NVIDIA card
+After=suspend.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo '\_SB.PCI0.P0P1.VGA._OFF' > /proc/acpi/call"
+
+[Install]
+WantedBy=suspend.target
+
+
+$ sudo systemctl enable root-resume@user
+
+Restart
+
+Done ;)
+
+
+
+
+Obs:
+
+Other acpi_calls that may work in other systems:
+\_SB.PCI0.P0P1.VGA._OFF
+\_SB.PCI0.P0P2.VGA._OFF
+\_SB_.PCI0.OVGA.ATPX
+\_SB_.PCI0.OVGA.XTPX
+\_SB.PCI0.P0P3.PEGP._OFF
+
+echo '\_SB.PCI0.P0P1.VGA._OFF' > /proc/acpi/call
+
+check with dmesg if the error below occurs:
+[  292.208174] acpi_call: Cannot get handle: Error: AE_NOT_FOUND
+if not, then that is the correct acpi_call for your system.
+
+
+############################################################################
+
+
+# [OLD] Guidelines to disable NVidia graphics card 
+# this method doesn't work with suspend and hibernation
+# kernel panic
+
+lscpi command to see if the NVidia card module is loaded
+$ lspci 
+list all pci devices. (optional: lspci | grep nvidia)
+
+powerstat to see the laptop power`s comsumption
+$ yaourt -S powerstat-git
+$ powerstat -d 0
+
+$ vim /etc/modprobe.d/blacklist-nouveau.conf
+blacklist nouveau
+
+install bbswitch:
+$ yaourt -S bbswitch
+
+Edit /etc/modules-load.d/bbswitch.conf
+bbswitch
+
+Edit /etc/modprobe.d/bbswitch.conf
+options bbswitch load_state=0
+
+This makes sure that whenever the bbswitch module is loaded, the card is turned off automatically
+
+sudo mkinitcpio -p linux
+
+Reboot
+
+Check with lspci if the NVidia card is loaded
+
+Check with:
+dmesg | grep bbswitch 
+[    2.267611] bbswitch: version 0.8
+[    2.267622] bbswitch: Found integrated VGA device 0000:00:02.0: \_SB_.PCI0.VGA_
+[    2.267635] bbswitch: Found discrete VGA device 0000:01:00.0: \_SB_.PCI0.P0P1.VGA_
+[    2.267802] bbswitch: detected a nVidia _DSM function
+[    2.267909] bbswitch: disabling discrete graphics
+[    2.360102] bbswitch: Succesfully loaded. Discrete card 0000:01:00.0 is offi
+
+Success!
+
+
+
+

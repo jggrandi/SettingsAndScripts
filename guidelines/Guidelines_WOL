@@ -1,0 +1,65 @@
+Guidelines to wake a computer on over the internet
+
+Introduction
+
+WOL provides the ability to wake-up a sleeping, hibernating, or powered-off computer. Chances are your computer has the WOL feature.
+Reasons to use WOL with DD-WRT:
+You do not want a computer on all the time, yet you want to use it from outside your home or office, and there is a DD-WRT-enabled device as the Internet gateway for that computer, powered on all the time.
+You run a server or computer all the time, and want it to shut down in case of over-temp or other situations. If this happens, you may still need to access documents on the server, from inside or outside the home network.
+[edit]Preparation
+
+You will need:
+A PC which supports WOL. Most modern PC's can be set-up this way.
+Administrative access to the computer you want to sleep/wake-up.
+The WOL computer should have a static IP address, one manually assigned or through static DHCP. In the example below, we assume your router LAN is 192.168.1.x (the default) and the static IP WOL computer is 192.168.1.254.
+Ideally, a second PC to test the WOL abilities of the first one. You can also use the DD-WRT device's Web Interface to send test packets, in place of a second PC.
+[edit]Enable WOL on the Computer
+
+On the LAN adapter of the computer (physical ethernet adapter and/or wireless, given BIOS support), choose Properties/Configure.
+Power Management tab (far right). Check the second and third boxes to enable WOL. Press OK until you are back at Network Connections. Now the computer can normally be started from Hibernate, Standby, or PowerOff modes via a special management packet.
+Get ready to test your set-up by using a utility like WOL Magic Packet Sender http://magicpacket.free.fr/ (free). Install it on both the computer you are using and a second PC on the same physical LAN.
+On the WOL computer, open WOL Magic Packet and on the Receive tab, click the green Start button.
+On the second computer, open WOL Magic Packet and on the Send tab, put in:
+IP Address of WOL computer for Host Name
+0.0.0.0 for Subnet Mask (select from drop-down)
+MAC address of LAN adapter on WOL computer. Use the command 'ipconfig /all' if you don't know what this is.
+Click the green Send button. The WOL computer should respond with a pop-up box showing a packet was received.
+Repeat the previous steps and go over the trouble-shooting tips until they work before proceeding.
+[edit]Test that WOL works within the LAN
+
+Hibernate, Standby, and Power-off the WOL computer, while clicking Send on the second computer, to test each mode to make sure WOL is working.
+Once this step is working, you can go on to making WOL work when you are outside your LAN, such as at a cafe or another remote location.
+[edit]Troubleshooting
+Wake On LAN is usually disabled by default in most PCs. This feature, if optional, must be enabled in your BIOS otherwise WOL isn't going to work. Consult your motherboard's manual and BIOS screen (DEL at startup, usually). If you don't see the WakeOn-type options in your BIOS, usually somewhere in Power Management, your motherboard may not support WOL.
+A good place to start is here: [1]
+[edit]WOL Methods
+
+[edit]WOL through Telnet/SSH
+Note: This is the preferred method to send WOL magic packets remotely.
+If you have local or remote Telnet/SSH access to your router, you can wake up a machine on the LAN by using the following command:
+/usr/sbin/wol -i 192.168.1.255 -p PP AA:BB:CC:DD:EE:FF
+Note that the full path to "/usr/sbin/wol" is important. Simply "wol" will not work.
+Substitute AA:BB:CC:DD:EE:FF with the actual MAC address of the computer which you wish to boot remotely. Likewise, replace 192.168.1.255 with the actual broadcast address of the network (192.168.1.255 is the broadcast address when the machine has an IP of 192.168.1.x and subnet mask of 255.255.255.0). Replace "PP" with the port number your machine listens on (usually 7 or 9).
+[edit]Remote Wake On LAN via Port Forwarding
+To remotely wake up a computer over the Internet using Wake On LAN- follow these instructions:
+1 - Create a port forward rule on the Web Interface (Applications & Gaming -> Port Range Forward) to the chosen ip:
+wol  |  9  |  9  |  udp  |  192.168.1.254  |  x
+Here, 9 is the default, but you can use any port number so long as your client wake-up application can talk to a port other than 9. Most WOL services will use either UDP port 7 or 9.
+192.168.1.254 is just an IP address in your LAN's subnet; it can be any IP, as long as it is not assigned to any device on your network.
+2 - Add a static ARP entry by typing the following line into the Administration -> Commands section of the Web Interface and then saving with Save Startup.
+arp -i br0 -s 192.168.1.254 FF:FF:FF:FF:FF:FF
+Do not change the FF:FF:FF:FF:FF:FF MAC address; this is a special MAC address used when broadcasting. WOL magic packets are constructed using the MAC address of the target computer, but should be and almost always are sent via broadcast; the MAC address used here controls with how the packet is sent, not how it is formed.
+The 192.168.1.254 IP address should correspond with the IP address you used in the previous step. Again, this IP should be in your LAN's subnet, and you must not assign this IP address to any actual device on your network.
+Explanation/rationale for this setup: Normally, WOL magic packets are sent to a special broadcast IP--to the final .255 in a subnet or to 255.255.255.255. Since port-forwarding to these special dedicated broadcast IPs does not work, what we need to do is create our own broadcast IP by taking an unused IP and assigning it a broadcast MAC and then port-forward to that.
+As an optional alternative, instead of arp, you can use ip neigh (which does the exact same thing as arp). Support for ip neigh was removed from DD-WRT starting with build 17650, and arp is unavailable in DD-WRT builds older than 5672.
+ip neigh change 192.168.1.254 lladdr ff:ff:ff:ff:ff:ff nud permanent dev br0
+ip neigh add 192.168.1.254 lladdr ff:ff:ff:ff:ff:ff nud permanent dev br0
+3 - Reboot the router, or execute the startup commands manually.
+To wake your computer from the internet using the DD-WRT device DynDNS name (or if you know it, the public IP of the router), try one of the following services;
+Mestrona's online WOL. You need to forward port 9 udp in step one, to use this service.
+Wake-On-LAN Online. It works both on ports 7 and 9 and allows WOL by a single URL of the form: http://mobile.wakeonlan.me/?ip=HOSTNAME&mac=MACADDRESS. It also allows for scheduled wakeup over the internet.
+To use the WOL Magic Packet application from a second PC:
+Host Name: DynDNS name of your DD-WRT device.
+Subnet Mask: 255.255.255.255
+MAC Address: WOL computer MAC address, not the DD-WRT MAC.
+Click the green Send button.

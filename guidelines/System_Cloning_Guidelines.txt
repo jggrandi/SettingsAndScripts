@@ -1,0 +1,151 @@
+System Cloning Guidelines
+
+Preparation:
+Bootable Live CD or Live USB
+Both HDs connected in the same machine
+Verify whitch HD will be cloned and whitch is the destination.
+The destination HD must have at least the same space as the source disk. If the destination is larger, the remaing space can be used later.
+
+Cloning Steps:
+We are going to use the "dd" application.
+
+dd if=source of=destination bs=4096 bs=4096 conv=notrunc,noerror,sync
+
+where: source and destinatio are your devices, e.g "if=/dev/sda of=//dev/sdb" (note: we are clonning the entire device, so we don't use numbers after the device)
+
+notrunc or 'do not truncate' maintains data integrity by instructing dd not to truncate any data
+
+noerror instructs dd to continue operation, ignoring all read errors. Default behavior for dd is to halt at any error.
+
+sync writes zeroes for read errors, so data offsets stay in sync.
+
+bs=4096 sets the block size to 4k, an optimal size for hard disk read/write efficiency and therefore, cloning speed.
+
+The command above clone the entire HD including the MBR partition. 
+The informations were adapted from the Arch Linux Wiki, thead Disk Clonning. (For complementary information follow the link).
+
+It will take time, depending on the HD space.
+
+After the disk clonning
+
+Turn off the system
+
+Remove the Live USB/CD
+
+Disconnect the source HD, leaving connected only the destinatio HD.
+
+Turn on the system 
+
+The system will boot normaly, as it happended with the source HD.
+
+********************************
+
+It was the best situation, where we just want to move the entire system to another HD for some reason, e.g bigger HD, replace a falty HD and etc.
+
+But, sometimes we want to clone the HD to eliminate the boring system instalation and configuration steps. It means that the clonned HD will run in another machine possibly with different hardware configuration.
+
+The good part here is that Linux handles different hardware configurations pretty well.
+The counter part is that some system configurations will make the boot hangs or even don't boot at all.
+
+In the next steps I will cover some possible problems that can appear and their solutions when using another hardware configuration.
+
+I've tested in machines with same processor and video card manufacture, but with different archtetures.
+
+My source system:
+Intel Core i7-2600
+8GB Ram DDR3
+SSD 128GB - System
+HD 500GB - Data
+GeForce 560Ti
+Motherboard MSI with Intel chipset
+
+The destination system:
+Intel Core 2 Quad Q9550
+8GB Ram DDR2
+HD 250GB
+GeForce 9600GT
+Motherboard XFX with nForce chipset
+
+The operational system is Arch Linux with Gnome graphical interface.
+
+1. Before try to boot the cloned HD into the destination hardware is important to disable some system configurations that may hang the boot. To do so, connect the clonned HD into the Souce system and start the SO.
+In my case I have a fstab configuration to mount the HD 500GB (Data). The initialization procedure automatic mount this HD, but in the destination hardware I don't have this HD, so I removed the line in /etc/fstab that mounts the Data HD.
+
+To avoid headache, I will put the solution for the graphics card problem in this steps. The problem is that the graphics card driver installed in th source system is not compatible with the destination system's graphics card. (Arch linux package for 560Ti is nvidia and for the 9600GT is nvidia-340xx). Just replace the nvidia package to the nvidia-340xx (pacman -S nvidia-340xx handles it).
+
+There are just examples, you can figure out other configurations that may hand the boot, such as, dhcpd, wifi services.
+
+After this precaution step, we are ready to connect the cloned HD in the destination hardware.
+
+Start the system and verify if Grub loads. Select the default option and wait the boot procedure.
+
+In this stage some things can happen (based in my experiences)
+
+1. The system falls into a recovery mode showing a message that the disk UUID=XXXX was not found
+
+2. The system aparently loads, but doesn't load the ghaphical interface.
+
+3. The system loads normaly
+
+Some times the system loads normaly with graphical interface or in situation 2 and when it is restarted it falls in situation 1.
+
+For 1, it is necessary to edit the grub during the boot.
+In the grub menu:
+Move the option bar to fallback mode (don't press enter)
+Press 'e'
+Edit the line ....
+replace the root=XXXX value to root=/dev/sda1 and remove the quiet to allow verbose mode during boot.
+Press F10 to boot with the modified configurations.
+The system will boot and maybe fall into 2.
+If it fails to boot with the same message, you have to figure out whitch partition and device is your system at. The most common is /dev/sda1, but it may change.
+
+For 2, try to open another tty pressing Ctrl+Alt+F2.
+A login screen have to apper. 
+
+If the login screen doen't apper wait more time, maybe a service is hanging the boot (normally they have a time limit, ~2min). 
+
+If, after a long time nothing happened, plug the HD back to the source system and try to figure out which service is hanging the boot.
+
+If the login apper:
+Log into the system with your user or root.
+We are going to fix grub.
+The commands below need root privileges.
+execute:
+mkinitcpio -p linux
+it will generate new initramfs-linux-fallback.img  initramfs-linux.img  vmlinuz-linux based on your system configurations.
+
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+to reinstall grub into MBR and update the configuration files
+
+Disable GDM during boot with
+systemctl disable gdm.
+
+reboot the system.
+
+The system have to boot normally with the default grub option and fall directly into the non-graphical login screen.
+
+Log in with your user
+
+Start the GDM with
+systemctl start gdm
+
+The graphical interface should load.
+
+Open a terminal and enable GDM to start automatic
+systemctl enable gdm.
+
+That's it!
+The system was cloned!
+Enjoy
+
+
+
+
+
+
+
+
+
+
+
