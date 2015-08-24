@@ -1,0 +1,10 @@
+[Unit]
+Description=Disable NVIDIA card
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo '\_SB.PCI0.P0P1.VGA._OFF' > /proc/acpi/call"
+
+[Install]
+WantedBy=multi-user.target

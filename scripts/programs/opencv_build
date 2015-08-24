@@ -1,0 +1,5 @@
+#!/bin/bash
+FILE_NAME=$1
+FILE_EXTENTION=.cpp
+g++ -g -Wall -o $FILE_NAME $FILE_NAME$FILE_EXTENTION `pkg-config opencv --libs --cflags`
+
