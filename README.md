@@ -12,7 +12,7 @@ Contains scripts to common tasks.
 [Click here](scripts/) to see the folder's contents.
 
 ## Guidelines
-Contains guides to configure/run a program or system
+Contains guides to configure/run a program or system.
 [Click here](guidelines/) to see the folder's contents.
 
 
