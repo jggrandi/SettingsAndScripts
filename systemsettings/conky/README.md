@@ -7,3 +7,7 @@ It provides:
 * Battery usage, hours left and power drain in watts.
 * Brightness and sound levels
 * Date and hour.
+
+Bar example:
+
+![alt tag](conkybar_example.png)
