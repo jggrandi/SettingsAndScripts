@@ -229,3 +229,8 @@ client.focused #404040 #303030 #e0e0e0 #268bd2
 client.focused_inactive #404040 #252525 #93a1a1 #002b36
 client.unfocused #404040 #202020 #404040 #002b36
 #client.urgent #dc322f #dc322f #fdf6e3 #dc322f
+
+#print screen
+bindsym Print exec scrot -e 'mv $f /tmp/ && gimp /tmp/$f'
+#print selected
+bindsym $mod+Print --release exec scrot -s -e 'mv $f /tmp/ && gimp /tmp/$f'
