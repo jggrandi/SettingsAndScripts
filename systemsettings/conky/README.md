@@ -8,6 +8,10 @@ It provides:
 * Brightness and sound levels
 * Date and hour.
 
+## Obs:
+[Font Awesome](https://fortawesome.github.io/Font-Awesome/) necessary for icons.
+`yaourt -S ttf-font-awesome`
+
 Bar example:
 
 ![alt tag](conkybar_example.png)
