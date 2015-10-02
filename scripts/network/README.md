@@ -14,16 +14,16 @@ Repository created to store settings and scripts and remember some tips and tric
  
 ### Tunnel to a specific machine passing through portal.inf.ufrgs.br 
 * Run the script [tunnel_ufrgs.sh](tunnel_ufrgs.sh) 
-* In another terminal, access the remote machine with: 
-	`ssh -p 2222 <username>@localhost `
-Or send/receive files with: 
-	`scp [-r] -p 2222 <username>@localhost:/<path>/<to>/<file> <local>/<place>`
+* In another terminal, access the remote machine with:  
+	`ssh -p 2222 <username>@localhost `  
+Or send/receive files with:  
+	`scp [-r] -p 2222 <username>@localhost:/<path>/<to>/<file> <local>/<place>`  
 
 ### Eduroam access 
 * Edit the file [eduroam_ufrgs](eduroam_ufrgs) 
 * Change: 
 	WIRELESS_INTERFACE: wireless interface. (ip addr shows all network interfaces available) 
-	ID: your university`s id (for UFRGS students the id is a number like 00XXXXXX) 
+	ID: your university's id (for UFRGS students the id is a number like 00XXXXXX) 
 	PASSWORD: your university`s password 
 * Move the file to /etc/netctl/ 
 * Connect to the eduroam network. 
