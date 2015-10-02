@@ -13,7 +13,8 @@ Repository created to store settings and scripts and remember some tips and tric
 * Run the script [ssh_ufrgs.sh](ssh_ufrgs.sh) 
  
 ### Tunnel to a specific machine passing through portal.inf.ufrgs.br 
-* Run the script [tunnel_ufrgs.sh](tunnel_ufrgs.sh) 
+* Run the script [tunnel_ufrgs.sh](tunnel_ufrgs.sh), or just run:
+	`ssh <username>@portal.inf.ufrgs.br -L 2222:<remotemachine>:22`
 * In another terminal, access the remote machine with:  
 	`ssh -p 2222 <username>@localhost `  
 Or send/receive files with:  
