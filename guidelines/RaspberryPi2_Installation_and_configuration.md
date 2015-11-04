@@ -29,16 +29,34 @@ Replace sdX in the following instructions with the device name for the SD card a
 	```
 5. Download and extract the root filesystem (as root, not via sudo):  
 	```
-	wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
-	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
-	sync
+	wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz  
+	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root  
+	sync  
 	```
 6. Move boot files to the first partition:  
-	`mv root/boot/* boot`
+	`mv root/boot/* boot`  
 	Unmount the two partitions:  
-	`umount boot root`
+	`umount boot root`  
 
 7. Insert the SD card into the Raspberry Pi, connect ethernet, and apply 5V power.  
 	* Use the serial console or SSH to the IP address given to the board by your router.
 	* Login as the default user alarm with the password alarm.
 	* The default root password is root.
+
+## Initial configuration
+
+1. Timezone  
+	`tzselect`
+
+2. Swap  
+	```
+	fallocate -l 1024M /swapfile  
+	chmod 600 /swapfile  
+	mkswap /swapfile  
+	swapon /swapfile  
+	echo 'vm.swappiness=1' > /etc/sysctl.d/99-sysctl.conf  
+	```
+	Edit `/etc/fstab`:  
+	`/swapfile none swap defaults 0 0`  
+
+3. 	
