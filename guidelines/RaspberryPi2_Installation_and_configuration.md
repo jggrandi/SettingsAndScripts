@@ -59,4 +59,50 @@ Replace sdX in the following instructions with the device name for the SD card a
 	Edit `/etc/fstab`:  
 	`/swapfile none swap defaults 0 0`  
 
-3. 	
+3. System Update
+	```
+	pacman -Sy pacman  
+	pacman-key --init  
+	pacman -S archlinux-keyring  
+	pacman-key --populate archlinux  
+	pacman -Syu --ignore filesystem  
+	pacman -S filesystem --force  
+	reboot  
+	```
+	Add colors to pacman output:  
+	`sed -i 's/#Color/Color/' /etc/pacman.conf`
+4. NTP
+	```
+	pacman -S ntp  
+	systemctl enable ntpd.service  
+	systemctl start ntpd.service  
+	```
+5. Locale
+	* Uncoment locales in `/etc/locale.gen`  
+		I use: en_US.UTF-8 and pt_BR.UTF-8  
+	* Run `locale-gen`  
+	* Create `/etc/locale.conf` and add:  
+	```
+	LANG=en_US.UTF-8  
+	LC_TIME=pt_BR.UTF-8  
+	LC_MONETARY=pt_BR.UTF-8  
+	```
+	
+6. Change root password  
+	`passwd`  
+
+7. Set hostname  
+	`hostnamectl set-hostname your-hostname`  
+
+8. Create user
+	`useradd -m -G wheel -s /bin/bash <username>`
+
+9. Setup sudo  
+	```
+	pacman -S sudo vim  
+	visudo  
+	```
+	* Uncomment the line:  
+	`wheel ALL=(ALL) ALL`  
+
+ 
