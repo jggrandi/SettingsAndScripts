@@ -1,6 +1,7 @@
 # Raspberry PI 2 Installation and Configuration
 
-## Installation (Copied from http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2)
+## Installation 
+(Copied from http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2)
 
 Replace sdX in the following instructions with the device name for the SD card as it appears on your computer.  
 
@@ -14,29 +15,29 @@ Replace sdX in the following instructions with the device name for the SD card a
 	* Type **n**, then **p** for primary, **2** for the second partition on the drive, and then press **ENTER** twice to accept the default first and last sector.  
 	* Write the partition table and exit by typing **w**.  
 3. Create and mount the FAT filesystem:  
-```
-mkfs.vfat /dev/sdX1
-mkdir boot
-mount /dev/sdX1 boot
-```
+	```
+	mkfs.vfat /dev/sdX1
+	mkdir boot
+	mount /dev/sdX1 boot
+	```
+
 4. Create and mount the ext4 filesystem:  
-```
-mkfs.ext4 /dev/sdX2
-mkdir root
-mount /dev/sdX2 root
-```
+	```
+	mkfs.ext4 /dev/sdX2
+	mkdir root
+	mount /dev/sdX2 root
+	```
 5. Download and extract the root filesystem (as root, not via sudo):  
-```
-wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
-bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
-sync
-```
+	```
+	wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
+	bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root
+	sync
+	```
 6. Move boot files to the first partition:  
-```
-mv root/boot/* boot
-Unmount the two partitions:
-umount boot root
-```
+	`mv root/boot/* boot`
+	Unmount the two partitions:  
+	`umount boot root`
+
 7. Insert the SD card into the Raspberry Pi, connect ethernet, and apply 5V power.  
 	* Use the serial console or SSH to the IP address given to the board by your router.
 	* Login as the default user alarm with the password alarm.
