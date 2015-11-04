@@ -71,30 +71,31 @@ Replace sdX in the following instructions with the device name for the SD card a
 	```
 	Add colors to pacman output:  
 	`sed -i 's/#Color/Color/' /etc/pacman.conf`
-4. NTP
+4. NTP  
 	```
 	pacman -S ntp  
 	systemctl enable ntpd.service  
 	systemctl start ntpd.service  
 	```
-5. Locale
+
+5. Locale  
 	* Uncoment locales in `/etc/locale.gen`  
 		I use: en_US.UTF-8 and pt_BR.UTF-8  
 	* Run `locale-gen`  
 	* Create `/etc/locale.conf` and add:  
-	```
-	LANG=en_US.UTF-8  
-	LC_TIME=pt_BR.UTF-8  
-	LC_MONETARY=pt_BR.UTF-8  
-	```
+		```
+		LANG=en_US.UTF-8  
+		LC_TIME=pt_BR.UTF-8  
+		LC_MONETARY=pt_BR.UTF-8  
+		```
 	
 6. Change root password  
 	`passwd`  
 
-7. Set hostname  
+7. Set hostname   
 	`hostnamectl set-hostname your-hostname`  
 
-8. Create user
+8. Create user  
 	`useradd -m -G wheel -s /bin/bash <username>`
 
 9. Setup sudo  
@@ -105,4 +106,18 @@ Replace sdX in the following instructions with the device name for the SD card a
 	* Uncomment the line:  
 	`wheel ALL=(ALL) ALL`  
 
- 
+## Main Packages 
+
+## Misc
+
+1. Change SSH gretting (motd)
+
+	Edit `/etc/motd`
+
+2. Copy the public ssh key to raspberry  
+
+	`ssh-copy-id -i ~/.ssh/id_rsa.pub <user>@<remotemachine -p <port>`
+
+3. Bash Colors
+	Edit `/etc/bash.bashrc` or `~/.bash.bashrc` with the configurations presented [here](../systemsettings/arch/)
+	 
