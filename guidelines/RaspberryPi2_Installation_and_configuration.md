@@ -106,9 +106,40 @@ Replace sdX in the following instructions with the device name for the SD card a
 	* Uncomment the line:  
 	`wheel ALL=(ALL) ALL`  
 
-## Main Packages 
+## Main Packages
+
+1. Audio
+	`pacman -S alsa-utils alsa-firmware alsa-lib alsa-plugins`  
+	Adjust the default volume using alsamixer and ensure that the sole source "PCM" is not muted.  
+	Select an audio source for output:  
+	`amixer cset numid=3 x`  
+		* 0 Auto  
+		* 1 Analog  
+		* 2 HDMI  
+
+2. Xorg
+	```
+	pacman -S xorg-xinit xorg-server xorg-server-utils xorg-apps  
+	pacman -S xf86-video-fbdev  
+	```
 
 ## Misc
+
+0. AUR Package Manager
+	* Package-query
+		```
+		wget https://aur.archlinux.org/cgit/aur.git/snapshot/package-query.tar.gz`  
+		tar -xvzf package-query.tar.gz  
+		cd package-query  
+		makepkg -si  
+		```
+	* Yaourt
+		```
+		wget https://aur.archlinux.org/cgit/aur.git/snapshot/yaourt.tar.gz  
+		tar -xvzf yaourt.tar.gz  
+		cd yaourt  
+		makepkg -si  
+		```
 
 1. Change SSH gretting (motd)
 
@@ -118,6 +149,25 @@ Replace sdX in the following instructions with the device name for the SD card a
 
 	`ssh-copy-id -i ~/.ssh/id_rsa.pub <user>@<remotemachine -p <port>`
 
-3. Bash Colors
-	Edit `/etc/bash.bashrc` or `~/.bash.bashrc` with the configurations presented [here](../systemsettings/arch/)
-	 
+3. Bash Colors  
+	Edit `/etc/bash.bashrc` or `~/.bash.bashrc` with the configurations presented [here](../systemsettings/arch/)  
+
+4. Additional packages
+	`pacman -S nfs-utils htop autofs base-devel wget` 
+
+5. WiringPI  
+	`yaourt -S wiringpi-git`  
+	* Test:  
+		```
+		gpio -v  
+		gpio readall  
+		```
+
+6. VC
+	Edit `/etc/profile`  
+	`PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/vc/sbin:/opt/vc/bin"`  
+
+7. Fix HDMI resolution
+	Edit `/boot/config.txt`
+	Uncomment `disable_overscan=1`
+
