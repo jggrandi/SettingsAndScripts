@@ -1,11 +1,11 @@
 # Redirect UFRGS INF emails to GMail.
 
 ## Summary  
-  The process consists in:  
-    0. Verify if you have a *@ufrgs.br* email active;  
-    1. Redirect the *@inf.ufrgs.br* emails to *@ufrgs.br* email;  
-    2. Import the *@ufrgs.br* email in Gmail;  
-    3. (Optional) Configure Gmail to send *@inf.ufrgs.br* emails.  
+  The process consists in:
+  0. Verify if you have a *@ufrgs.br* email active;  
+  1. Redirect the *@inf.ufrgs.br* emails to *@ufrgs.br* email;  
+  2. Import the *@ufrgs.br* email in Gmail;  
+  3. (Optional) Configure Gmail to send *@inf.ufrgs.br* emails.  
 
 ## Steps  
 0. Make sure that you have the access to your *@ufrgs.br* email:  
