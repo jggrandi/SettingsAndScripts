@@ -8,8 +8,8 @@
   3. (Optional) Configure Gmail to send *@inf.ufrgs.br* emails.  
 
 ## Steps  
-0. Make sure that you have the access to your *@ufrgs.br* email:  
-  * To verify if your *@ufrgs.br* is activate:   
+0. To verify if your *@ufrgs.br* is activate:   
+  * Make sure that you have access to your *@ufrgs.br* email:  
     - Access your account in http://ufrgs.br -> Aluno  
     - Go to Chasque -> Correio Eletrônico -> Informação sobre sua conta de email pessoal  
     - If it is not activate, follow the instructions to activate.  
