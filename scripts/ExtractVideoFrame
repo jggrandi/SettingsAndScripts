@@ -1,0 +1,1 @@
+ffmpeg -accurate_seek -ss <time in seconds> -i <path/to/video>  -frames:v 1 <filename>.bmp
