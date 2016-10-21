@@ -1,0 +1,67 @@
+First solution:
+Use arandr program and i3 shortcut binds:
+1- Unplug all external monitors;
+2- open arandr, setup the monitor layout and save (ex. laptop.sh)
+3- Plug the external monitor, setup the monitors layout and save (ex. external.sh)
+4- open the i3 config file (vim .i3/config)
+5- bindsym $mod+F6 exec ~/.screenlayout/laptop.sh
+   bindsym $mod+F7 exec ~/.screenlayout/external.sh
+6- save, and restart i3 ($mod+Shift+r)
+
+Second solution:
+(adapted from: https://bbs.archlinux.org/viewtopic.php?pid=1329375#p1329375)
+
+Use systemd (a service or a device), and use a condition on monitor status on sysfs instead of checking xrandr
+if [ $(cat /sys/class/drm/card0-HDMI-A-1/status) == "connected" ] ; then
+
+Udev rule :
+ACTION=="change", KERNEL=="card0", SUBSYSTEM=="drm", RUN+="/usr/bin/systemctl start hot_plug.service"
+
+
+Systemd unit in /etc/systemd/system/hot_plug.service
+
+[Unit]
+Description=Monitor hotplug
+
+[Service]
+Type=simple
+RemainAfterExit=no
+User=jeronimo
+ExecStart=/usr/local/bin/hotplug_monitor.sh
+
+[Install]
+WantedBy=multi-user.target
+#!/bin/bash
+
+Script:
+
+######################################
+## /usr/local/bin/hotplug_monitor.sh
+######################################
+X_USER=jeronimo
+export DISPLAY=:0
+export XAUTHORITY=/home/$X_USER/.Xauthority
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+
+function connect()
+{   
+    #dual monitor - VGA1 at right - xfce panel on left (LVDS1)
+    xrandr --output VGA1 --right-of LVDS1 --preferred  --output VGA1 --primary >> /tmp/screen
+
+    #Set xfce panel on primary monitor
+    #xfconf-query -v -c xfce4-panel -p /panels/panel-0/output-name -s HDMI1 
+}
+
+function disconnect(){
+     xrandr --output VGA1 --off
+     #Set xfce panel on LVDS1
+     #xfconf-query -c xfce4-panel -p /panels/panel-0/output-name -s LVDS1
+}
+
+if [ $(cat /sys/class/drm/card0-VGA-1/status) == "connected" ] ; then
+  connect
+elif [ $(cat /sys/class/drm/card0-VGA-1/status) == "disconnected" ] ; then
+  disconnect
+else 
+  exit
+fi
