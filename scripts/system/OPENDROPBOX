@@ -1,0 +1,2 @@
+sudo cryptsetup --type tcrypt open /dev/sdb2 DROPBOX
+sudo mount /dev/mapper/DROPBOX /mnt/truecrypt1/
