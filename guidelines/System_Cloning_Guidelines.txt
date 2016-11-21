@@ -9,9 +9,9 @@ The destination HD must have at least the same space as the source disk. If the 
 Cloning Steps:
 We are going to use the "dd" application.
 
-dd if=source of=destination bs=4096 bs=4096 conv=notrunc,noerror,sync
+dd if=source of=destination bs=4096 conv=notrunc,noerror,sync
 
-where: source and destinatio are your devices, e.g "if=/dev/sda of=//dev/sdb" (note: we are clonning the entire device, so we don't use numbers after the device)
+where: source and destinatio are your devices, e.g "if=/dev/sda of=/dev/sdb" (note: we are clonning the entire device, so we don't use numbers after the device)
 
 notrunc or 'do not truncate' maintains data integrity by instructing dd not to truncate any data
 
@@ -32,17 +32,17 @@ Turn off the system
 
 Remove the Live USB/CD
 
-Disconnect the source HD, leaving connected only the destinatio HD.
+Disconnect the source HD, leaving connected only the destination HD.
 
 Turn on the system 
 
-The system will boot normaly, as it happended with the source HD.
+The system will boot normally, as it was the source HD.
 
 ********************************
 
 It was the best situation, where we just want to move the entire system to another HD for some reason, e.g bigger HD, replace a falty HD and etc.
 
-But, sometimes we want to clone the HD to eliminate the boring system instalation and configuration steps. It means that the clonned HD will run in another machine possibly with different hardware configuration.
+But, sometimes we want to clone the HD to use in another machine. It eliminates the boring system instalation and configuration steps. It means that the clonned HD will run possibly with different hardware configuration.
 
 The good part here is that Linux handles different hardware configurations pretty well.
 The counter part is that some system configurations will make the boot hangs or even don't boot at all.
@@ -66,12 +66,12 @@ HD 250GB
 GeForce 9600GT
 Motherboard XFX with nForce chipset
 
-The operational system is Arch Linux with Gnome graphical interface.
+The operational system is Arch Linux with i3 window manager.
 
 1. Before try to boot the cloned HD into the destination hardware is important to disable some system configurations that may hang the boot. To do so, connect the clonned HD into the Souce system and start the SO.
-In my case I have a fstab configuration to mount the HD 500GB (Data). The initialization procedure automatic mount this HD, but in the destination hardware I don't have this HD, so I removed the line in /etc/fstab that mounts the Data HD.
+In my case I have a fstab configuration to mount an HD 500GB (Data). The initialization procedure automatic mount this HD, but in the destination hardware I don't have this HD, so I removed the line in /etc/fstab that mounts the Data HD.
 
-To avoid headache, I will put the solution for the graphics card problem in this steps. The problem is that the graphics card driver installed in th source system is not compatible with the destination system's graphics card. (Arch linux package for 560Ti is nvidia and for the 9600GT is nvidia-340xx). Just replace the nvidia package to the nvidia-340xx (pacman -S nvidia-340xx handles it).
+To avoid headache, I will put the solution for the graphics card problem in this steps. The problem is that the graphics card driver installed in th source system is not compatible with the destination system's graphics card. (Arch linux package for 560Ti is nvidia and for the 9600GT is nvidia-340xx). Just replace the nvidia package for the nvidia-340xx (pacman -S nvidia-340xx handles it).
 
 There are just examples, you can figure out other configurations that may hand the boot, such as, dhcpd, wifi services.
 
@@ -83,13 +83,13 @@ In this stage some things can happen (based in my experiences)
 
 1. The system falls into a recovery mode showing a message that the disk UUID=XXXX was not found
 
-2. The system aparently loads, but doesn't load the ghaphical interface.
+2. The system aparently loads, but doesn't starts the ghaphical interface.
 
-3. The system loads normaly
+3. The system loads normally
 
-Some times the system loads normaly with graphical interface or in situation 2 and when it is restarted it falls in situation 1.
+Sometimes the system loads normally with graphical interface or in situation 2 and then when it is restarted it falls in situation 1.
 
-For 1, it is necessary to edit the grub during the boot.
+For situation 1, it is necessary to edit the grub during the boot.
 In the grub menu:
 Move the option bar to fallback mode (don't press enter)
 Press 'e'
