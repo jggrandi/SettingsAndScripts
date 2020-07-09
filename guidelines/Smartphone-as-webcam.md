@@ -6,6 +6,7 @@ This is particularly useful for any kind of virtual meeting (Zoom, Skype, Hangou
 We will use the app Droidcam. It is composed of two apps one that runs in the **smartphone** and the other that runs in the **computer**. 
 The app is pretty much straightforward to setup and to get it working.   
 Make sure that both devices are connected to the same network. Follow the app instructions.
+
 **Smartphone:** Install Droidcam app
 
 **Computer:** Install Droidcam client
