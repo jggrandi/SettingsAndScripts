@@ -15,6 +15,8 @@ Make sure that both devices are connected to the same network. Follow the app in
 The goal here is to automate the steps to start the app on the smartphone. The idea is to make the Droidcam app run automatically without touching the smartphone. 
 This is useful when the phone mounted in a tripod and it is already in a perfect position.
 
+> Droidcam v6.3.0 added an option to auto-lauch the Android app. Still, the steps below are a good source of information.
+
 ### Smartphone Steps (via USB cable) ###
 The USB connection makes the phone always changed and facilitates the automation process.
 Since we are using an old smartphone, the chances are that its battery is already degraded. So, keep it always charging is not a bad idea. 
