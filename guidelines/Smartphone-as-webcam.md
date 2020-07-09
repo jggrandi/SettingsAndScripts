@@ -42,6 +42,7 @@ This will allow the Android tools to be integrated into the system and to be exe
 6. Script to stop the camera app (add one command per line and save it as a .bat)
   * `adb shell am force-stop com.dev47apps.droidcam` -- Closes the app on the phone
   * `adb shell input keyevent 26` -- Locks the phone
+  * `taskkill /IM "DroidCamApp.exe" /F` -- Closes the app on the computer
   
 ### Misc commands ###
 1. List apps installed: `adb shell "pm list packages | grep cam"`
