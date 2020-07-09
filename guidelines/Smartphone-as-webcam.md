@@ -31,7 +31,7 @@ Optional step: Uninstall/disable all the apps that are not necessary.
 2. Unpack it to a folder
 3. Add the **Android Platform Tools** folder to the system PATH variable in the "System Environment Variables", e.g. `C:\Program Files\platform-tools_r30.0.3-windows\platform-tools`.
 This will allow the Android tools to be integrated into the system and to be executable from anywhere in the terminal.
-4. In the terminal, check if **ADB** is working and if the phone is correctly connected to the computer with `adb devices`
+4. In the terminal, check if **ADB** is working and if the phone is correctly connected to the computer with `adb devices`. The list of devices attached should contain on element.
 5. Script to start the camera (add one command per line and save it as a .bat)
   * `adb shell input keyevent 26` -- Issue a lock button press
   * `adb shell input touchscreen swipe 930 880 930 380` -- Mimics a swipe up
