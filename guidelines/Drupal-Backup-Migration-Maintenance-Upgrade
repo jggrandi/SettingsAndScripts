@@ -1,0 +1,72 @@
+
+------------------------------
+## Acquia Dev allow Remote Access to website (the config needs to be done every time acquia is started)
+-- Local network access
+https://rihards.com/2019/acquia-dev-desktop-local-network/
+
+--- Add to vhosts.conf
+    Require all granted
+--------------------------------
+## Migrate from Acquia to Apache
+--------------------------------
+In Acquia, export drupal archive
+Moving Drupal website to the server
+- Database:
+• (first time) access with root, add a mysql user and grant permissions
+• mysql -u root -p
+• GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password'; (it need to match with the drupal configs)
+• \q (to quit)
+• mysql -u username -p (enter with the created user)
+• CREATE DATABASE dbname;
+• USE dbname;
+
+- Open a browser and visit the drupal site ( it will show the installation page)
+- Follow the instructions using the DB user, pass and name from the previous step.
+- Once you've gone through the setup process and your looking a fresh install of Drupal on your screen, go back to the terminal and recreate the database
+• mysql -u username -p
+• DROP DATABASE dbname;
+• CREATE DATABASE dbname;
+• USE dbname;
+• \q
+• mysql -u username -p databasename < database.sql 
+
+- Make a backup of settings.php located in /var/www/<drupalsite>/sites/default/ (this file contains the settings for drupal to connect with the DB)
+- copy the Drupal website folder to /var/www/ 
+- change the ownership 
+• chown -R www-data:www-data <drupalsite>
+-copy the settings.php that was backuped back to /var/www/<drupalsite>/sites/default/
+
+- Restart apache
+• systemctl restart apache2
+
+- Open the website in the browser (it should work)
+- The template sometimes(?) can not load, but the main content will appear.
+- Log with the admin account 
+• sitename/user
+- Solve the issues in the status report (in the admin panel, go to configuration and look for the link in the  red alert on top of the page)
+• Not writable. The directory c:\windows\temp does not exist. Change to /tmp
+- Clear all caches (in the admin panel, go to configuration->performance)
+
+It should complete the migration.
+
+--------
+HTTPS
+Steps followed:
+https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04
+--------
+SECURITY
+Steps followed:
+https://www.christitus.com/secure-web-server/
+Check Site Security: https://sitecheck.sucuri.net/
+--------
+UPGRADE
+Download the latest version
+remove these files from the /var/www/psuid_dd3 folder
+sudo rm -r INSTALL.txt LICENSE.txt README.txt autoload.php composer.json composer.lock core/ example.gitignore index.php robots.txt update.php vendor/ web.config
+unzip the new version and copy the files to the psuid_dd3 folder
+sudo cp -r INSTALL.txt LICENSE.txt README.txt autoload.php composer.json composer.lock core/ example.gitignore index.php robots.txt update.php vendor/ web.config /var/www/psuid_dd3
+Access the site, go to Extend->Update update the modules required..
+
+--------
+
+
